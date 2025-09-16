@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: user-service
+
+  config:
+    import: "configserver:"  # <- must be a string
+
+  cloud:
+    config:
+      uri: http://localhost:8888
+      fail-fast: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, info
+
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
