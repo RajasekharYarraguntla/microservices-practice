@@ -13,9 +13,6 @@ import java.util.List;
 @Slf4j
 public class UserController {
 
-    @Value("${server.port}")
-    private int port;
-
     private final UserService userService;
 
     public UserController(UserService service) {
@@ -30,7 +27,6 @@ public class UserController {
     @GetMapping("/{id}")
     public User getUser(@PathVariable Long id) {
         log.info("user id {}", id);
-        log.info("port {}", port);
         return userService.getUserById(id);
     }
 

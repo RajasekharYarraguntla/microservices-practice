@@ -42,8 +42,3 @@ management:
       exposure:
         include: gateway,health,info
 
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
-    org.springframework.cloud.loadbalancer: DEBUG
-    org.springframework.cloud.netflix.eureka: DEBUG
