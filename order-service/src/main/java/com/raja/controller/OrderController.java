@@ -2,12 +2,14 @@ package com.raja.controller;
 
 import com.raja.entity.Order;
 import com.raja.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
+@Slf4j
 public class OrderController {
 
     private final OrderService orderService;
@@ -28,6 +30,7 @@ public class OrderController {
 
     @PostMapping
     public Order createOrder(@RequestBody Order order) {
+        log.info("order {}", order);
         return orderService.createOrder(order);
     }
 

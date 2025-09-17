@@ -3,11 +3,13 @@ package com.raja.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Entity
 @Table(name = "users")
 @Setter
+@ToString
 public class User {
 
     @Id

@@ -24,8 +24,16 @@ management:
       exposure:
         include: refresh, health, info
 
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
 
   h2:
     console:
       enabled: true
       path: /h2-console
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{traceId},%X{spanId}] %m%n"

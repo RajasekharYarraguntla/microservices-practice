@@ -4,11 +4,13 @@ import com.raja.dto.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "orders")
 @Getter
 @Setter
+@ToString
 public class Order {
 
     @Id
