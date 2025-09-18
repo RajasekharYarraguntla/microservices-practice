@@ -1,30 +1,25 @@
 package com.raja.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Entity
 @Table(name = "users")
 @Setter
-@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
+    @Column(unique = true, nullable = false)
+    private String username;
+    @Column(nullable = false)
+    private String password;
+    private String role;
     private String email;
-
-    // Constructors, getters, setters
-    public User() {}
-
-    public User(String name, String email) {
-        this.name = name;
-        this.email = email;
-    }
 
 }
