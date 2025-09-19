@@ -18,6 +18,7 @@ import java.io.IOException;
 public class ApiKeyAuthFilter extends OncePerRequestFilter {
 
     private static final String API_KEY_HEADER = "X-API-KEY";
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Value("${security.api-key}")
     private String staticKey;
@@ -26,8 +27,7 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
+        if (isAuthenticated()) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -36,15 +36,23 @@ public class ApiKeyAuthFilter extends OncePerRequestFilter {
         if (staticKey.equals(apiKey)) {
             filterChain.doFilter(request, response);
         } else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json");
-            ApiErrorResponse error = new ApiErrorResponse();
-            error.setMessage("Invalid API Key");
-            error.setStatusCode(HttpServletResponse.SC_UNAUTHORIZED);
-            error.setTimestamp(System.currentTimeMillis());
-            error.setPath(request.getRequestURI());
-            String json = new ObjectMapper().writeValueAsString(error);
-            response.getWriter().write(json);
+            writeErrorResponse(response, request.getRequestURI());
         }
+    }
+
+    private boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.isAuthenticated();
+    }
+
+    private void writeErrorResponse(HttpServletResponse response, String path) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        ApiErrorResponse error = new ApiErrorResponse();
+        error.setMessage("Invalid API Key");
+        error.setStatusCode(HttpServletResponse.SC_UNAUTHORIZED);
+        error.setTimestamp(System.currentTimeMillis());
+        error.setPath(path);
+        response.getWriter().write(OBJECT_MAPPER.writeValueAsString(error));
     }
 }
