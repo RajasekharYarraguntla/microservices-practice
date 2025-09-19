@@ -37,3 +37,6 @@ management:
 logging:
   pattern:
     level: "%5p [${spring.application.name},%X{traceId},%X{spanId}] %m%n"
+
+security:
+  api-key: 124fgfgf5226
